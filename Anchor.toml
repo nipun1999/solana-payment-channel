@@ -1,0 +1,12 @@
+[programs.localnet]
+payment_channel = "GjgwVLdzuYpkivHkR9XtJ1r4ttwRtAB4tUv246uH3U4T"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "localnet"
+wallet = "/Users/nipun/.config/solana/id.json"
+
+[scripts]
+test = "mocha -t 1000000 tests/"
