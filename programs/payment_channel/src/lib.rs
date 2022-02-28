@@ -79,6 +79,12 @@ pub mod payment_channel {
         if previous_balance != (new_user_1_balance+new_user_2_balance) {
             return Err(ErrorCode::InvalidBalances.into());
         }
+        if *ctx.accounts.user_1.to_account_info().key != multi_sig_wallet.user_1 &&  *ctx.accounts.user_1.to_account_info().key != multi_sig_wallet.user_2{
+            return Err(ErrorCode::InvalidSigner.into());
+        }
+        if *ctx.accounts.user_2.to_account_info().key != multi_sig_wallet.user_1 &&  *ctx.accounts.user_2.to_account_info().key != multi_sig_wallet.user_2{
+            return Err(ErrorCode::InvalidSigner.into());
+        }
         multi_sig_wallet.user_1_balance = new_user_1_balance;
         multi_sig_wallet.user_2_balance = new_user_2_balance;
         Ok(())
@@ -86,6 +92,11 @@ pub mod payment_channel {
 
     pub fn close_channel(ctx: Context<WithdrawBalance>) -> ProgramResult {
         let multi_sig_wallet = &mut ctx.accounts.multisig_wallet;
+
+        if *ctx.accounts.signer.to_account_info().key != multi_sig_wallet.user_1 &&  *ctx.accounts.signer.to_account_info().key != multi_sig_wallet.user_2{
+            return Err(ErrorCode::InvalidSigner.into());
+        }
+
         let user_1_balance = multi_sig_wallet.user_1_balance;
         let user_2_balance = multi_sig_wallet.user_2_balance;
 
@@ -198,4 +209,6 @@ pub enum ErrorCode {
     NotEnoughLamports,
     #[msg("previous contribution sum doesnot match with new contribution sum")]
     InvalidBalances,
+    #[msg("Not a valid signer")]
+    InvalidSigner,
 }

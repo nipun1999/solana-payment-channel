@@ -84,12 +84,12 @@ describe('payment_channel', async () => {
       accounts: {
         multisigWallet: multiSigWallet.publicKey,
         owner: treasuryWallet.publicKey,
-        signer: alice.publicKey,
+        signer: treasuryWallet.publicKey,
         user1: alice.publicKey,
         user2: bob.publicKey,
         systemProgram: SystemProgram.programId,
       },
-      signers: [treasuryWallet,alice]
+      signers: [treasuryWallet]
     });
     const multiSigWalletObj = await program.account.multiSigWallet.fetch(multiSigWallet.publicKey);
     console.log(multiSigWalletObj)
